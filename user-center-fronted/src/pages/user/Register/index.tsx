@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer';
-import { login } from '@/services/ant-design-pro/api';
+import { login, register } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
 import {
   AlipayCircleOutlined,
@@ -15,9 +15,9 @@ import {
   ProFormCheckbox,
   ProFormText,
 } from '@ant-design/pro-components';
-import { Alert, Divider, message, Space, Tabs } from 'antd';
+import { Alert, message, Tabs } from 'antd';
 import React, { useState } from 'react';
-import { FormattedMessage, history, Link, SelectLang, useIntl, useModel } from 'umi';
+import { FormattedMessage, history, SelectLang, useIntl, useModel } from 'umi';
 import styles from './index.less';
 import { SYSTEM_LOGO } from '@/constants';
 
@@ -34,48 +34,42 @@ const LoginMessage: React.FC<{
   />
 );
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState<API.LoginResult>({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
   const intl = useIntl();
 
-  const fetchUserInfo = async () => {
-    const userInfo = await initialState?.fetchUserInfo?.();
-    if (userInfo) {
-      await setInitialState((s) => ({
-        ...s,
-        currentUser: userInfo,
-      }));
+  const handleSubmit = async (values: API.RegisterParams) => {
+    const { userAccount, userPassword, checkPassword } = values;
+    //校验
+    if (userPassword !== checkPassword) {
+      message.error('再次输入的不一致');
+      return;
     }
-  };
-
-  const handleSubmit = async (values: API.LoginParams) => {
     try {
-      // 登录
-      const user = await login({ ...values, type });
-      if (user) {
-        const defaultLoginSuccessMessage = intl.formatMessage({
-          id: 'pages.login.success',
-          defaultMessage: '登录成功！',
-        });
+      //注册;
+      const id = await register(values);
+      if (id >= 0) {
+        const defaultLoginSuccessMessage = '注册成功';
         message.success(defaultLoginSuccessMessage);
-        await fetchUserInfo();
         /** 此方法会跳转到 redirect 参数所在的位置 */
         if (!history) return;
         const { query } = history.location;
         const { redirect } = query as { redirect: string };
-        history.push(redirect || '/');
+        history.push('/user/login?redirect=' + redirect);
         return;
+      } else {
+        throw new Error(`register error id = ${id}`);
       }
       console.log(msg);
-      // 如果失败去设置用户错误信息
+      // 如果失败去设置用户错误信息;
       setUserLoginState(user);
     } catch (error) {
       const defaultLoginFailureMessage = intl.formatMessage({
         id: 'pages.login.failure',
-        defaultMessage: '登录失败，请重试！',
+        defaultMessage: '注册失败，请重试！',
       });
       message.error(defaultLoginFailureMessage);
     }
@@ -96,12 +90,17 @@ const Login: React.FC = () => {
           initialValues={{
             autoLogin: true,
           }}
+          submitter={{
+            searchConfig: {
+              submitText: '注册',
+            },
+          }}
           actions={
             [
               // <FormattedMessage
               //   key="loginWith"
               //   id="pages.login.loginWith"
-              //   defaultMessage="其他登录方式"
+              //   defaultMessage="其他注册方式"
               // />,
               // <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.icon} />,
               // <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.icon} />,
@@ -109,24 +108,25 @@ const Login: React.FC = () => {
             ]
           }
           onFinish={async (values) => {
-            await handleSubmit(values as API.LoginParams);
+            await handleSubmit(values as API.RegisterParams);
           }}
         >
           <Tabs activeKey={type} onChange={setType}>
             <Tabs.TabPane
               key="account"
-              tab={intl.formatMessage({
-                id: 'pages.login.accountLogin.tab',
-                defaultMessage: '账户密码登录',
-              })}
+              // tab={intl.formatMessage({
+              //   id: 'pages.login.accountLogin.tab',
+              //   defaultMessage: '账户密码注册',
+              // })}
+              tab={'账号密码注册'}
             />
-            <Tabs.TabPane
+            {/* <Tabs.TabPane
               key="mobile"
               tab={intl.formatMessage({
                 id: 'pages.login.phoneLogin.tab',
-                defaultMessage: '手机号登录',
+                defaultMessage: '手机号注册',
               })}
-            />
+            /> */}
           </Tabs>
 
           {status === 'error' && loginType === 'account' && (
@@ -172,6 +172,30 @@ const Login: React.FC = () => {
                       <FormattedMessage
                         id="pages.login.password.required"
                         defaultMessage="请输入密码！"
+                      />
+                    ),
+                  },
+                  {
+                    min: 8,
+                    type: 'string',
+                    message: '密码不能小于8',
+                  },
+                ]}
+              />
+              <ProFormText.Password
+                name="checkPassword"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined className={styles.prefixIcon} />,
+                }}
+                placeholder="请再次输入密码"
+                rules={[
+                  {
+                    required: true,
+                    message: (
+                      <FormattedMessage
+                        id="pages.login.password.required"
+                        defaultMessage="请再次输入密码！"
                       />
                     ),
                   },
@@ -272,19 +296,16 @@ const Login: React.FC = () => {
               marginBottom: 24,
             }}
           >
-            <Space split={<Divider type="vertical" />}>
-              <ProFormCheckbox noStyle name="autoLogin">
-                <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动登录" />
-              </ProFormCheckbox>
-              <Link to="/user/register">注册账号</Link>
-              <a
-                style={{
-                  float: 'right',
-                }}
-              >
-                <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
-              </a>
-            </Space>
+            <ProFormCheckbox noStyle name="autoLogin">
+              <FormattedMessage id="pages.login.rememberMe" defaultMessage="自动注册" />
+            </ProFormCheckbox>
+            <a
+              style={{
+                float: 'right',
+              }}
+            >
+              <FormattedMessage id="pages.login.forgotPassword" defaultMessage="忘记密码" />
+            </a>
           </div>
         </LoginForm>
       </div>
@@ -293,4 +314,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Register;

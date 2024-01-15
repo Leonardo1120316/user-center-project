@@ -4,9 +4,11 @@ export default [
     layout: false,
     routes: [
       {
-        name: 'login',
-        path: '/user/login',
-        component: './user/Login',
+        path: '/user',
+        routes: [
+          { name: 'Login', path: '/user/login', component: './user/Login' },
+          { name: 'Register', path: '/user/register', component: './user/Register' },
+        ],
       },
       {
         component: './404',
@@ -26,11 +28,17 @@ export default [
     access: 'canAdmin',
     routes: [
       {
-        path: '/admin/sub-page',
-        name: 'sub-page',
+        path: '/admin/user-manage',
+        name: '用户管理',
         icon: 'smile',
-        component: './Welcome',
+        component: './Admin/UserManage',
       },
+      // {
+      //   path: '/admin/sub-page',
+      //   name: 'sub-page',
+      //   icon: 'smile',
+      //   component: './Welcome',
+      // },
       {
         component: './404',
       },
@@ -46,12 +54,12 @@ export default [
     path: '/',
     redirect: '/welcome',
   },
-  {
-    name: '分析页',
-    icon: 'smile',
-    path: '/yupi',
-    component: './DashboardAnalysis',
-  },
+  // {
+  //   name: '分析页',
+  //   icon: 'smile',
+  //   path: '/yupi',
+  //   component: './DashboardAnalysis',
+  // },
   {
     component: './404',
   },
