@@ -1,5 +1,5 @@
 import { searchUsers } from '@/services/ant-design-pro/api';
-import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
+import { EllipsisOutlined, PlusOutlined, RadiusBottomleftOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Dropdown, Space, Tag } from 'antd';
@@ -52,8 +52,25 @@ const columns: ProColumns<API.CurrentUser>[] = [
     title: '头像',
     dataIndex: 'avartarUrl',
     render: (_, record) => (
-      <div>
-        <img src={record.avartarUrl} width={100} />
+      <div
+        style={{
+          width: 50,
+          height: 50,
+          borderRadius: 10,
+          borderColor: 'aliceblue',
+          borderWidth: 'medium',
+        }}
+      >
+        <img
+          src={record.avartarUrl}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 10,
+            borderColor: 'aliceblue',
+            borderWidth: 'medium',
+          }}
+        />
       </div>
     ),
   },
@@ -74,6 +91,11 @@ const columns: ProColumns<API.CurrentUser>[] = [
   {
     title: '邮件',
     dataIndex: 'email',
+    copyable: true,
+  },
+  {
+    title: '星球编号',
+    dataIndex: 'planetCode',
     copyable: true,
   },
   {

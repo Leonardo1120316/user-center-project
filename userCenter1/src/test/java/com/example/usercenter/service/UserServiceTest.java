@@ -23,7 +23,6 @@ class UserServiceTest {
         user.setAvartarUrl("http://baidu.com");
         user.setGender(0);
         user.setUserPassword("12345");
-        user.setColumn_7(0);
         user.setPhone("133222444555");
         user.setEmail("133222444555@qq.com");
         user.setUserStatus(0);

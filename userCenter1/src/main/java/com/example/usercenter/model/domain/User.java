@@ -45,9 +45,9 @@ public class User implements Serializable {
     private String userPassword;
 
     /**
-     * 
+     * 星球编号
      */
-    private Integer column_7;
+    private String planetCode;
 
     /**
      * 

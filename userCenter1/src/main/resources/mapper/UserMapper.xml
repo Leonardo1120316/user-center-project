@@ -11,7 +11,7 @@
             <result property="avartarUrl" column="avartarUrl" jdbcType="VARCHAR"/>
             <result property="gender" column="gender" jdbcType="TINYINT"/>
             <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
-            <result property="column_7" column="column_7" jdbcType="INTEGER"/>
+            <result property="planetCode" column="planetCode" jdbcType="VARCHAR"/>
             <result property="phone" column="phone" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
             <result property="userStatus" column="userStatus" jdbcType="INTEGER"/>
@@ -24,7 +24,7 @@
     <sql id="Base_Column_List">
         id,username,userAccount,
         avartarUrl,gender,userPassword,
-        column_7,phone,email,
+        planetCode,phone,email,
         userStatus,createTime,updateTime,
         isDelete,userRole
     </sql>

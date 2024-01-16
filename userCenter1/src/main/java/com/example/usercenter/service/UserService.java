@@ -11,14 +11,15 @@ import javax.servlet.http.HttpServletRequest;
 * @createDate 2024-01-10 14:19:22
 */
 public interface UserService extends IService<User> {
-    /**\
+    /**
      *
      * @param userAccount
      * @param userPassword
      * @param checkPassword
+     * @param planetCode
      * @return
      */
-   long userRegister(String userAccount,String userPassword,String checkPassword);
+   long userRegister(String userAccount,String userPassword,String checkPassword,String planetCode);
 
     /**
      *
@@ -29,5 +30,18 @@ public interface UserService extends IService<User> {
      */
    User userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
+    /**
+     * 用户脱敏
+     * @param user
+     * @return
+     */
     User getSafeUser(User user);
+
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    int userLogout(HttpServletRequest request);
+
 }

@@ -33,15 +33,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     final String SALT = "yupi";
 
     @Override
-    public long userRegister(String userAccount, String userPassword, String checkPassword) {
+    public long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode) {
         //1.校验
-        if(StringUtils.isAnyBlank(userAccount,userPassword,checkPassword)){
+        if(StringUtils.isAnyBlank(userAccount,userPassword,checkPassword,planetCode)){
             return -1;
         }
         if(userAccount.length()<4){
             return -1;
         }
         if(userPassword.length()<8||checkPassword.length()<8){
+            return -1;
+        }
+        //校验星球用户
+        if(planetCode.length()>5){
             return -1;
         }
         //账号不包含特殊字符
@@ -61,12 +65,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (count > 0) {
             return -1;
         }
+        // 校验星球编号不重复
+        queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("planetCode", planetCode);
+        count = userMapper.selectCount(queryWrapper);
+        if (count > 0) {
+            return -1;
+        }
         //加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
         // 3.插⼊数据
         User user = new User();
         user.setUserAccount(userAccount);
         user.setUserPassword(encryptPassword);
+        user.setPlanetCode(planetCode);
         boolean saveResult = this.save(user);
         if (!saveResult) {
             return -1;
@@ -126,6 +138,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safeUser.setUserAccount(user.getUserAccount());
         safeUser.setAvartarUrl(user.getAvartarUrl());
         safeUser.setGender(user.getGender());
+        safeUser.setPlanetCode(user.getPlanetCode());
         safeUser.setPhone(user.getPhone());
         safeUser.setEmail(user.getEmail());
         safeUser.setUserRole(user.getUserRole());
@@ -133,6 +146,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safeUser.setCreateTime(user.getCreateTime());
         return safeUser;
     }
+
+
+
+    @Override
+    public int userLogout(HttpServletRequest request) {
+        //移除登录态
+        request.getSession().removeAttribute(USER_LOGIN_STATE);
+        return 1;
+    }
+
 }
 
 

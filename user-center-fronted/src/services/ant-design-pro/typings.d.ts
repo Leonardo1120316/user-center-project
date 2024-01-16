@@ -3,14 +3,16 @@
 
 declare namespace API {
   type CurrentUser = {
+    id?: string;
     userAccount?: string;
-    avatarUrl?: string;
+    avartarUrl?: string;
     gender?: number;
     email?: string;
     phone?: string;
-    userPassword?: string;
+    username?: string;
     email?: string;
     userStatus?: number;
+    planetCode?: string;
     createTime?: Date;
     updateTime?: Date;
     isDelete?: number;
@@ -68,6 +70,7 @@ declare namespace API {
     userAccount?: string;
     userPassword?: string;
     checkPassword?: string;
+    planetCode?: string;
     type?: string;
   };
 
