@@ -1,3 +1,4 @@
+import { message } from 'antd';
 // @ts-ignore
 /* eslint-disable */
 
@@ -17,6 +18,13 @@ declare namespace API {
     updateTime?: Date;
     isDelete?: number;
     userRole?: number;
+  };
+
+  type BaseResponse<T> = {
+    data: T;
+    code: number;
+    message: string;
+    description: string;
   };
 
   type LoginResult = {

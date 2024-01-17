@@ -2,6 +2,8 @@ package com.example.usercenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.usercenter.common.ErrorCode;
+import com.example.usercenter.exception.BusinessException;
 import com.example.usercenter.mapper.UserMapper;
 import com.example.usercenter.model.domain.User;
 import com.example.usercenter.service.UserService;
@@ -36,17 +38,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public long userRegister(String userAccount, String userPassword, String checkPassword, String planetCode) {
         //1.校验
         if(StringUtils.isAnyBlank(userAccount,userPassword,checkPassword,planetCode)){
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"参数为空");
         }
         if(userAccount.length()<4){
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"用户账户过短");
         }
         if(userPassword.length()<8||checkPassword.length()<8){
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"用户密码过短");
         }
         //校验星球用户
         if(planetCode.length()>5){
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"星球编号过长");
         }
         //账号不包含特殊字符
         String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
@@ -63,14 +65,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         queryWrapper.eq("userAccount", userAccount);
         long count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"账号重复");
         }
         // 校验星球编号不重复
         queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("planetCode", planetCode);
         count = userMapper.selectCount(queryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR,"编号重复");
         }
         //加密
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
