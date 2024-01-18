@@ -2,6 +2,15 @@
 /* eslint-disable */
 
 declare namespace API {
+  /**
+   * 通用返回类
+   */
+  type BaseResponse<T> = {
+    code: number;
+    data: T;
+    message: string;
+    description: string;
+  };
   type CurrentUser = {
     id?: string;
     userAccount?: string;

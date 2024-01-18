@@ -1,18 +1,18 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from 'umi';
+import request from '@/plugins/globalRequest';
 
 /** 获取当前的用户 GET /api/user/currentUser */
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<API.CurrentUser>('/api/user/current', {
+  return request<API.BaseResponse<API.CurrentUser>>('/api/user/current', {
     method: 'GET',
     ...(options || {}),
   });
 }
 
-/** 退出登录接口 POST /api/login/logout */
+/** 退出登录接口 POST /api/login/logout */ //interger?
 export async function outLogin(options?: { [key: string]: any }) {
-  return request<Record<string, any>>('/api/user/logout', {
+  return request<API.BaseResponse<Record<string, any>>>('/api/user/logout', {
     method: 'POST',
     ...(options || {}),
   });
@@ -20,7 +20,7 @@ export async function outLogin(options?: { [key: string]: any }) {
 
 /** 登录接口 POST /api/login/account */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request<API.LoginResult>('/api/user/login', {
+  return request<API.BaseResponse<API.LoginResult>>('/api/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
 
 /** 注册接口 POST /api/user/register */
 export async function register(body: API.RegisterParams, options?: { [key: string]: any }) {
-  return request<API.RegisterResult>('/api/user/register', {
+  return request<API.BaseResponse<API.RegisterResult>>('/api/user/register', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export async function register(body: API.RegisterParams, options?: { [key: strin
 
 /** 搜索用户 GET /api/user/search */
 export async function searchUsers(options?: { [key: string]: any }) {
-  return request<API.CurrentUser>('/api/user/search', {
+  return request<API.BaseResponse<API.CurrentUser>>('/api/user/search', {
     method: 'GET',
     ...(options || {}),
   });

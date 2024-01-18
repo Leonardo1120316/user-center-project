@@ -6,8 +6,16 @@ export default [
       {
         path: '/user',
         routes: [
-          { name: 'Login', path: '/user/login', component: './user/Login' },
-          { name: 'Register', path: '/user/register', component: './user/Register' },
+          {
+            name: 'Login',
+            path: '/user/login',
+            component: './user/Login',
+          },
+          {
+            name: 'Register',
+            path: '/user/register',
+            component: './user/Register',
+          },
         ],
       },
       {
@@ -32,8 +40,7 @@ export default [
         name: '用户管理',
         icon: 'smile',
         component: './Admin/UserManage',
-      },
-      // {
+      }, // {
       //   path: '/admin/sub-page',
       //   name: 'sub-page',
       //   icon: 'smile',
@@ -54,7 +61,12 @@ export default [
     path: '/',
     redirect: '/welcome',
   },
-  // {
+  {
+    name: '个人设置',
+    icon: 'smile',
+    path: '/accountsettings',
+    component: './AccountSettings',
+  }, // {
   //   name: '分析页',
   //   icon: 'smile',
   //   path: '/yupi',
