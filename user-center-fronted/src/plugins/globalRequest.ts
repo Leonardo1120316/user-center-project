@@ -12,7 +12,11 @@ import { stringify } from 'querystring';
  */
 const request = extend({
   credentials: 'include', // 默认请求是否带上cookie
-  prefix: process.env.NODE_ENV === 'production' ? 'http://111.229.196.204' : undefined,
+  // 本地地址
+  // prefix: process.env.NODE_ENV === 'production' ? 'http://111.229.196.204' : undefined,
+  // 线上地址
+  prefix: '',
+  baseURL: 'http://111.229.196.204',
   // requestType: 'form',
 });
 

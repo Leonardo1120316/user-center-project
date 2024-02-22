@@ -5,10 +5,10 @@ import { useIntl } from 'umi';
 const Footer: React.FC = () => {
   const intl = useIntl();
   const defaultMessage = intl.formatMessage({
-    id: 'Oasis_Studio',
-    defaultMessage: 'Oasis_Studio',
+    id: 'Leonardo_Studio',
+    defaultMessage: 'Leonardo_Studio',
   });
-  const copyright = '快见Oasis_Studio';
+  const copyright = 'Leonardo_Studio';
 
   const currentYear = new Date().getFullYear();
 

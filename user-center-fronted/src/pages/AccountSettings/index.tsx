@@ -19,8 +19,8 @@ const AccountSettings: React.FC = () => {
   const menuMap: Record<string, React.ReactNode> = {
     base: '基本设置',
     security: '安全设置',
-    binding: '账号绑定',
-    notification: '新消息通知',
+    // binding: '账号绑定',
+    // notification: '新消息通知',
   };
 
   const [initConfig, setInitConfig] = useState<AccountSettingsState>({

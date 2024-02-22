@@ -90,9 +90,9 @@ const Login: React.FC = () => {
       <div className={styles.content}>
         <LoginForm
           // logo={<img alt="logo" src={SYSTEM_LOGO} />}
-          title="Quick快见"
+          title="用户中心管理系统"
           // subTitle={intl.formatMessage({ id: 'pages.layouts.userLayout.title' })}
-          subTitle="Quick为使用者提供更快的用户协同管理"
+          subTitle="开放用户管理系统"
           initialValues={{
             autoLogin: true,
           }}

@@ -24,20 +24,25 @@ export type NoticeType = {
   memberLink: string;
 };
 
+export type BaseResponse<T> = {
+  code: number;
+  data: T;
+  message: string;
+  description: string;
+};
 export type CurrentUser = {
-  name: string;
-  avatar: string;
-  userid: string;
-  notice: NoticeType[];
-  email: string;
-  signature: string;
-  title: string;
-  group: string;
-  tags: TagType[];
-  notifyCount: number;
-  unreadCount: number;
-  country: string;
-  geographic: GeographicType;
-  address: string;
-  phone: string;
+  id?: string;
+  userAccount?: string;
+  avartarUrl?: string;
+  gender?: number;
+  email?: string;
+  phone?: string;
+  username?: string;
+  email?: string;
+  userStatus?: number;
+  planetCode?: string;
+  createTime?: Date;
+  updateTime?: Date;
+  isDelete?: number;
+  userRole?: number;
 };

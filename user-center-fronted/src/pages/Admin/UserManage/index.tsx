@@ -3,6 +3,7 @@ import { EllipsisOutlined, PlusOutlined, RadiusBottomleftOutlined } from '@ant-d
 import type { ActionType, ProColumns } from '@ant-design/pro-components';
 import { ProTable, TableDropdown } from '@ant-design/pro-components';
 import { Button, Dropdown, Space, Tag } from 'antd';
+import Avatar from 'antd/lib/avatar/avatar';
 import { useRef } from 'react';
 import request from 'umi-request';
 export const waitTimePromise = async (time: number = 100) => {
@@ -37,15 +38,18 @@ const columns: ProColumns<API.CurrentUser>[] = [
   {
     title: 'id',
     dataIndex: 'id',
+    valueType: 'text',
   },
   {
     title: '用户名',
     dataIndex: 'username',
     copyable: true,
+    valueType: 'text',
   },
   {
     title: '用户账号',
     dataIndex: 'userAccount',
+    valueType: 'text',
     copyable: true,
   },
   {
@@ -73,6 +77,8 @@ const columns: ProColumns<API.CurrentUser>[] = [
         />
       </div>
     ),
+    // valueType: 'avatar',
+    hideInSearch: true,
   },
   {
     title: '性别',
@@ -86,16 +92,19 @@ const columns: ProColumns<API.CurrentUser>[] = [
   {
     title: '电话',
     dataIndex: 'phone',
+    valueType: 'text',
     copyable: true,
   },
   {
     title: '邮件',
     dataIndex: 'email',
+    valueType: 'text',
     copyable: true,
   },
   {
     title: '星球编号',
     dataIndex: 'planetCode',
+    valueType: 'text',
     copyable: true,
   },
   {
@@ -121,20 +130,29 @@ const columns: ProColumns<API.CurrentUser>[] = [
     dataIndex: 'createTime',
     valueType: 'dateTime',
     copyable: true,
+    hideInSearch: true,
   },
 ];
 
 export default () => {
   const actionRef = useRef<ActionType>();
   return (
-    <ProTable<API.CurrentUser>
+    <ProTable<API.CurrentUser, API.CurrentUser>
       columns={columns}
       actionRef={actionRef}
       cardBordered
-      request={async (params = {}, sort, filter) => {
-        console.log(sort, filter);
+      onReset={async () => {
         const userList = await searchUsers();
         return {
+          data: userList,
+        };
+      }}
+      request={async (params, sort, filter) => {
+        console.log(sort, filter, params);
+        const userList = await searchUsers();
+        return {
+          sort,
+          filter,
           data: userList,
         };
       }}
@@ -177,7 +195,7 @@ export default () => {
         onChange: (page) => console.log(page),
       }}
       dateFormatter="string"
-      headerTitle="高级表格"
+      headerTitle="用户列表"
       toolBarRender={() => [
         <Button
           key="button"
@@ -187,7 +205,7 @@ export default () => {
           }}
           type="primary"
         >
-          新建
+          新增用户
         </Button>,
         <Dropdown
           key="menu"
