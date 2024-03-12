@@ -70,6 +70,8 @@
 
 ###### 安装依赖
 
+node  16.17.1
+
 ```npm
 npm i
 yarn install
